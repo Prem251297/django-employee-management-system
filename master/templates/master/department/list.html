@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Departments{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item">Master</li>
+        <li class="breadcrumb-item active" aria-current="page">Departments</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h3 class="fw-semibold mb-1">Departments</h3>
+        <p class="text-muted mb-0">Manage the list of departments in your organization.</p>
+    </div>
+    <a href="{% url 'master:department_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Add New Department
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-sm-6 col-lg-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" value="{{ search_query }}" class="form-control"
+                           placeholder="Search by department name">
+                </div>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-secondary">Search</button>
+                {% if search_query %}
+                    <a href="{% url 'master:department_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Department Name</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr>
+                        <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                        <td>{{ department.department }}</td>
+                        <td>
+                            {% if department.is_active %}
+                                <span class="badge bg-success-subtle text-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ department.created_at|date:"d M Y, h:i A" }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'master:department_edit' department.pk %}"
+                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'master:department_delete' department.pk %}"
+                               class="btn btn-sm btn-outline-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>No departments found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'master/includes/_pagination.html' %}
+    </div>
+</div>
+{% endblock %}

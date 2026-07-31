@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block title %}Add Gender{% endblock %} {% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'master:gender_list' %}">Genders</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add New</li>
+    </ol>
+</nav>
+{% endblock %} {% block content %} {% url 'master:gender_list' as list_url %} {% include 'master/includes/_form_card.html' with form_title='Add New Gender' form_icon='bi-plus-circle' cancel_url=list_url submit_label='Save Gender' %} {% endblock%}
