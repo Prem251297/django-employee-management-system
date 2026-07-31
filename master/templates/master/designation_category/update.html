@@ -8,5 +8,5 @@
 </nav>
 {% endblock %} {% block content %}
 {% url 'master:designation_category_list' as list_url %}
-{% include 'master/includes/_form_card.html' with form_title='Edit Designation Category' form_icon='bi-pencil-square' cancel_url=list_url submit_label='Update Designation Category' %}
+{% include 'master/includes/_form_card.html' with form_title='Edit Designation Category' form_icon='bi-pencil-square' cancel_url=list_url submit_label='Save' %}
 {% endblock %}
