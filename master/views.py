@@ -5,8 +5,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from .forms import DepartmentForm, DesignationCategoryForm, GenderForm
-from .models import Department, DesignationCategory, Gender
+from .forms import DepartmentForm, DesignationCategoryForm, GenderForm, AllowanceForm
+from .models import Department, DesignationCategory, Gender, Allowance
 
 
 # For Department Views
@@ -195,4 +195,67 @@ class GenderDeleteView(LoginRequiredMixin, DeleteView):
             )
             return redirect('master:gender_list')
         messages.success(self.request, 'Gender deleted successfully.')
+        return response
+
+
+# For Allowance Views
+class AllowanceListView(LoginRequiredMixin, ListView):
+    model = Allowance
+    template_name = 'master/allowance/list.html'
+    context_object_name = 'allowances'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('q', '').strip()
+        if search_query:
+            queryset = queryset.filter(allowance__icontains=search_query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('q', '')
+        return context
+
+
+class AllowanceCreateView(LoginRequiredMixin, CreateView):
+    model = Allowance
+    form_class = AllowanceForm
+    template_name = 'master/allowance/create.html'
+    success_url = reverse_lazy('master:allowance_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Allowance created successfully.')
+        return response
+
+
+class AllowanceUpdateView(LoginRequiredMixin, UpdateView):
+    model = Allowance
+    form_class = AllowanceForm
+    template_name = 'master/allowance/update.html'
+    success_url = reverse_lazy('master:allowance_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Allowance updated successfully.')
+        return response
+
+
+class AllowanceDeleteView(LoginRequiredMixin, DeleteView):
+    model = Allowance
+    template_name = 'master/allowance/delete.html'
+    context_object_name = 'allowance'
+    success_url = reverse_lazy('master:allowance_list')
+
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+        except RestrictedError:
+            messages.error(
+                self.request,
+                'This allowance cannot be deleted because it is linked to existing employee records.',
+            )
+            return redirect('master:allowance_list')
+        messages.success(self.request, 'Allowance deleted successfully.')
         return response

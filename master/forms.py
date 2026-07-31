@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Department, DesignationCategory, Gender
+from .models import Department, DesignationCategory, Gender, Allowance
 
 
 class BootstrapModelForm(forms.ModelForm):
@@ -83,3 +83,27 @@ class GenderForm(BootstrapModelForm):
         if duplicate.exists():
             raise forms.ValidationError('A gender with this name already exists.')
         return gender
+
+
+class AllowanceForm(BootstrapModelForm):
+    class Meta:
+        model = Allowance
+        fields = ['allowance', 'short_name', 'is_active']
+        labels = {
+            'allowance': 'Allowance Name',
+            'short_name': 'Short Name',
+            'is_active': 'Active',
+        }
+        widgets = {
+            'allowance': forms.TextInput(attrs={'placeholder': 'e.g. Housing Rent Allowance'}),
+            'short_name': forms.TextInput(attrs={'placeholder': 'e.g. HRA'}),
+        }
+
+    def clean_allowance(self):
+        allowance = self.cleaned_data['allowance'].strip()
+        duplicate = Allowance.objects.filter(allowance__iexact=allowance)
+        if self.instance.pk:
+            duplicate = duplicate.exclude(pk=self.instance.pk)
+        if duplicate.exists():
+            raise forms.ValidationError('An allowance with this name already exists.')
+        return allowance

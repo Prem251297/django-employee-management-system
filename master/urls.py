@@ -22,4 +22,10 @@ urlpatterns = [
     path('genders/add/', views.GenderCreateView.as_view(), name='gender_add'),
     path('genders/<int:pk>/edit/', views.GenderUpdateView.as_view(), name='gender_edit'),
     path('genders/<int:pk>/delete/', views.GenderDeleteView.as_view(), name='gender_delete'),
+
+    # For Allowance URLs
+    path('allowances/', views.AllowanceListView.as_view(), name='allowance_list'),
+    path('allowances/add/', views.AllowanceCreateView.as_view(), name='allowance_add'),
+    path('allowances/<int:pk>/edit/', views.AllowanceUpdateView.as_view(), name='allowance_edit'),
+    path('allowances/<int:pk>/delete/', views.AllowanceDeleteView.as_view(), name='allowance_delete'),
 ]

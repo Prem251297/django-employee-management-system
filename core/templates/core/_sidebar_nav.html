@@ -40,7 +40,13 @@
         </li>
         <li class="nav-item"><a class="nav-link" href="#">Salary Mode</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Bank</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Allowance</a></li>
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.resolver_match.app_name == 'master' and 'allowance' in request.resolver_match.url_name %}active{% endif %}"
+            href="{% url 'master:allowance_list' %}"
+            >Allowance</a
+          >
+        </li>
         <li class="nav-item"><a class="nav-link" href="#">Deduction</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Shift</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Country</a></li>

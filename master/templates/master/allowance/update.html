@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Department{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'master:allowance_list' %}">Allowances</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% url 'master:allowance_list' as list_url %}
+{% include 'master/includes/_form_card.html' with form_title='Edit Allowance' form_icon='bi-pencil-square' cancel_url=list_url submit_label='Save' %}
+{% endblock %}
