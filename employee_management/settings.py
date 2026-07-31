@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
+    'employee',
+    'attendance',
+    'holiday',
+    'leave',
+    'salary',
+    'master',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +137,7 @@ MESSAGE_TAGS = {
 
 # Authentication
 # https://docs.djangoproject.com/en/6.0/topics/auth/default/
+
+LOGIN_URL = 'core:login'
+LOGIN_REDIRECT_URL = 'core:dashboard'
+LOGOUT_REDIRECT_URL = 'core:login'
